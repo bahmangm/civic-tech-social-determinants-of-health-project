@@ -99,16 +99,26 @@ app.clientside_callback(
 
             group.style.cursor = 'pointer';
 
-            group.onclick = () => {
+            group.onclick = (event) => {
                 const allRanks = allFieldsRanks?.[area];
                 if (!allRanks || typeof allRanks !== 'object') return;
+
+                // Build tooltip HTML
                 let html = `<h4>Rank Details for Area ${area}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
                 for (const fieldName in allRanks) {
                     html += `<tr><td>${fieldName}</td><td>${allRanks[fieldName]}</td></tr>`;
                 }
                 html += "</tbody></table>";
+
+                // Position the tooltip near the cursor
                 tooltipDiv.innerHTML = html;
+                tooltipDiv.style.display = 'block';
+                tooltipDiv.style.position = 'fixed';
+                tooltipDiv.style.left = `${event.clientX + 10}px`;
+                tooltipDiv.style.top = `${event.clientY + 10}px`;
+                tooltipDiv.style.zIndex = 999;
             };
+
         }
 
         return "";
