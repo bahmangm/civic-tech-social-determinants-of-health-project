@@ -41,11 +41,12 @@ app.layout = html.Div([
 
     # Dropdown to choose field
     html.Div([
-        html.Label("Select a Field:"),
+        # html.Label("Select a Field:"),
         dcc.Dropdown(
             id='field-dropdown',
             options=[{'label': f, 'value': f} for f in fields],
-            value=fields[0]
+            # value=fields[0]
+            placeholder='Select a field'
         )
     ], style={'width': '300px', 'marginBottom': '20px'}),
 
@@ -70,7 +71,7 @@ app.clientside_callback(
         const obj = document.querySelector('#svg-container');
         const svgDoc = obj?.contentDocument;
         console.log("SVG Document:", svgDoc);
-        if (!svgDoc) return "";
+        if (!field || !svgDoc) return "";
 
         const tooltipDiv = document.getElementById('tooltip-container');
         tooltipDiv.innerHTML = '';
