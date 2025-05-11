@@ -93,6 +93,8 @@ app.clientside_callback(
                 const rank = fieldRanks[area];
                 const green = 100 + Math.floor(155 * (6 - rank) / 5);
                 rect.style.fill = `rgb(0,${green},0)`;
+            } else {
+                rect.style.fill = ''; // Reset to SVG default
             }
 
             group.style.cursor = 'pointer';
