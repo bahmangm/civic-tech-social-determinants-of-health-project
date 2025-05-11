@@ -1,5 +1,5 @@
 import dash
-from dash import html, dcc, Input, Output
+from dash import html, dcc, Input, Output, State
 import pandas as pd
 import os
 import json
@@ -34,44 +34,44 @@ if not os.path.exists('assets/rank_data.json'):
 
 # Create Dash app
 app = dash.Dash(__name__)
+app.title = "Interactive Area Report"
 
 # Layout
 app.layout = html.Div([
     html.H2("Interactive Area Visualization"),
 
-    # Dropdown to choose field
-    html.Div([
-        # html.Label("Select a Field:"),
-        dcc.Dropdown(
-            id='field-dropdown',
-            options=[{'label': f, 'value': f} for f in fields],
-            # value=fields[0]
-            placeholder='Select a field'
-        )
-    ], style={'width': '300px', 'marginBottom': '20px'}),
+    dcc.Dropdown(
+        id='field-dropdown',
+        options=[{'label': f, 'value': f} for f in fields],
+        placeholder='Select a field',
+        style={'width': '300px', 'marginBottom': '20px'}
+    ),
 
-    # SVG map container
-    html.Div([
-        html.ObjectEl(
-            id='svg-container',
-            data='/assets/image_map.svg',
-            type='image/svg+xml',
-            style={'width': '100%', 'height': 'auto'}
-        )
-    ]),
+    html.ObjectEl(
+        id='svg-container',
+        data='/assets/image_map.svg',
+        type='image/svg+xml',
+        style={'width': '100%', 'height': 'auto'}
+    ),
 
-    # Tooltip placeholder
+    dcc.Interval(
+        id='svg-loader',
+        interval=500,
+        n_intervals=0,
+        max_intervals=10  # Stop after 10 tries
+    ),
+
     html.Div(id='tooltip-container', style={'marginTop': '20px'})
 ])
 
 # JavaScript-based color and tooltip handler
 app.clientside_callback(
     """
-    function(field) {
+    function(field, n_intervals) {
         const obj = document.querySelector('#svg-container');
         const svgDoc = obj?.contentDocument;
         console.log("SVG Document:", svgDoc);
-        if (!field || !svgDoc) return "";
+        if (!svgDoc || !svgDoc.getElementById) return "";
 
         const tooltipDiv = document.getElementById('tooltip-container');
         tooltipDiv.innerHTML = '';
@@ -81,38 +81,41 @@ app.clientside_callback(
         if (!rankDataRaw) return "";
 
         const rankData = JSON.parse(rankDataRaw);
-        const fieldRanks = rankData?.[field] || {};
+        const fieldRanks = field ? (rankData?.[field] || {}) : {};
         const allFieldsRanks = rankData?.['all_fields'] || {};
 
         for (const area of areas) {
             const group = svgDoc.getElementById(area);
             const rect = group?.querySelector('rect');
-            if (group && rect && fieldRanks[area]) {
+            if (!group || !rect) continue;
+
+            if (fieldRanks[area]) {
                 const rank = fieldRanks[area];
                 const green = 100 + Math.floor(155 * (6 - rank) / 5);
                 rect.style.fill = `rgb(0,${green},0)`;
-                group.style.cursor = 'pointer';
-
-                group.onclick = () => {
-                    const allRanks = allFieldsRanks?.[area];
-                    if (!allRanks || typeof allRanks !== 'object') return;
-                    let html = `<h4>Rank Details for Area ${area}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
-                    for (const fieldName in allRanks) {
-                        html += `<tr><td>${fieldName}</td><td>${allRanks[fieldName]}</td></tr>`;
-                    }
-                    html += "</tbody></table>";
-                    tooltipDiv.innerHTML = html;
-                };
             }
+
+            group.style.cursor = 'pointer';
+
+            group.onclick = () => {
+                const allRanks = allFieldsRanks?.[area];
+                if (!allRanks || typeof allRanks !== 'object') return;
+                let html = `<h4>Rank Details for Area ${area}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
+                for (const fieldName in allRanks) {
+                    html += `<tr><td>${fieldName}</td><td>${allRanks[fieldName]}</td></tr>`;
+                }
+                html += "</tbody></table>";
+                tooltipDiv.innerHTML = html;
+            };
         }
 
         return "";
     }
     """,
     Output('tooltip-container', 'children'),
-    Input('field-dropdown', 'value')
+    Input('field-dropdown', 'value'),
+    Input('svg-loader', 'n_intervals')
 )
-
 
 # Inject rank_data into localStorage on app start
 app.index_string = '''
