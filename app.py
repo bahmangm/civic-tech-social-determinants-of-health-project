@@ -100,6 +100,17 @@ app.clientside_callback(
 
             group.style.cursor = 'pointer';
 
+            // Add tooltip (title tag) for hover
+            let existingTitle = group.querySelector('title');
+            if (!existingTitle) {
+                const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
+                titleEl.textContent = area.replace(/_/g, ' ');
+                group.appendChild(titleEl);
+            } else {
+                existingTitle.textContent = area.replace(/_/g, ' ');
+            }
+
+
             // Color by selected field
             if (fieldRanks[area]) {
                 const rank = fieldRanks[area];
@@ -118,7 +129,7 @@ app.clientside_callback(
                 const allRanks = allFieldsRanks?.[area];
                 if (!allRanks) return;
 
-                let html = `<h4>Rank Details for Area ${area}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
+                let html = `<h4>Rank Details for ${area.replace(/_/g, ' ')}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
                 for (const fieldName in allRanks) {
                     const rank = allRanks[fieldName];
                     const totalUnits = 13;
