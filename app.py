@@ -124,7 +124,19 @@ app.clientside_callback(
 
                 let html = `<h4>Rank Details for ${area}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
                 for (const fieldName in allRanks) {
-                    html += `<tr><td>${fieldName}</td><td>${allRanks[fieldName]}</td></tr>`;
+                    const rank = allRanks[fieldName];
+                    const totalUnits = 13;
+                    let bar = '<div style="display: flex; gap: 2px;">';
+                    for (let i = 0; i < totalUnits; i++) {
+                        if (i < totalUnits - rank) {
+                            bar += '<span style="width: 10px; height: 12px; background-color: green; display: inline-block;"></span>';
+                        } else {
+                            bar += '<span style="width: 10px; height: 12px; background-color: #eee; display: inline-block;"></span>';
+                        }
+                    }
+                    bar += '</div>';
+                    html += `<tr><td>${fieldName}</td><td>${bar}</td></tr>`;
+
                 }
                 html += "</tbody></table>";
 
