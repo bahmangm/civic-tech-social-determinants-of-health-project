@@ -38,43 +38,45 @@ app.title = "Interactive Area Report"
 
 # Layout
 app.layout = html.Div([
-    html.H2("Interactive Area Visualization"),
+    html.Div([
+        html.H2("Interactive Area Visualization"),
 
-    dcc.Dropdown(
-        id='field-dropdown',
-        options=[{'label': f, 'value': f} for f in fields],
-        placeholder='Select a field',
-        style={'width': '300px', 'marginBottom': '20px'}
-    ),
+        dcc.Dropdown(
+            id='field-dropdown',
+            options=[{'label': f, 'value': f} for f in fields],
+            placeholder='Select a field',
+            style={'width': '100%', 'marginBottom': '20px'}
+        ),
 
-    html.ObjectEl(
-        id='svg-container',
-        data='/assets/image_map.svg',
-        type='image/svg+xml',
-        style={'width': '100%', 'height': 'auto'}
-    ),
+        html.Div(id='area-details')
+    ], style={'width': '30%', 'padding': '20px', 'boxSizing': 'border-box'}),
 
-    dcc.Interval(
-        id='svg-loader',
-        interval=500,
-        n_intervals=0,
-        max_intervals=10  # Stop after 10 tries
-    ),
+    html.Div([
+        html.ObjectEl(
+            id='svg-container',
+            data='/assets/image_map.svg',
+            type='image/svg+xml',
+            style={'width': '100%', 'height': 'auto'}
+        ),
 
-    html.Div(id='tooltip-container', style={'marginTop': '20px'})
-])
+        dcc.Interval(
+            id='svg-loader',
+            interval=500,
+            n_intervals=0,
+            max_intervals=10  # Stop after 10 tries
+        ),
+    ], style={'width': '70%', 'padding': '20px', 'boxSizing': 'border-box'})
 
-# JavaScript-based color and tooltip handler
+], style={'display': 'flex', 'flexDirection': 'row'})
+
+
+# JavaScript-based color and click handler
 app.clientside_callback(
     """
     function(field, n_intervals) {
         const obj = document.querySelector('#svg-container');
         const svgDoc = obj?.contentDocument;
-        console.log("SVG Document:", svgDoc);
         if (!svgDoc || !svgDoc.getElementById) return "";
-
-        const tooltipDiv = document.getElementById('tooltip-container');
-        tooltipDiv.innerHTML = '';
 
         const areas = [
             "Harvey",
@@ -91,6 +93,7 @@ app.clientside_callback(
             "Grand_Lake",
             "Hashwaak"
         ];
+
         const rankDataRaw = localStorage.getItem('rank_data');
         if (!rankDataRaw) return "";
 
@@ -106,43 +109,34 @@ app.clientside_callback(
 
             if (fieldRanks[area]) {
                 const rank = fieldRanks[area];
-
                 const maxRank = 13;
                 const minGreen = 50;
                 const maxGreen = 255;
                 const green = minGreen + Math.floor((maxGreen - minGreen) * (maxRank - rank) / (maxRank - 1));
-
-                group.style.fill = `rgb(0,${green},0)`; // direct fill
+                group.style.fill = `rgb(0,${green},0)`;
             } else {
-                group.style.fill = ''; // Reset fill if not ranked
+                group.style.fill = '';
             }
 
-            group.onclick = (event) => {
+            group.onclick = () => {
                 const allRanks = allFieldsRanks?.[area];
                 if (!allRanks || typeof allRanks !== 'object') return;
 
-                // Build tooltip HTML
-                let html = `<h4>Rank Details for Area ${area}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
+                let html = `<h4>Rank Details for ${area}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
                 for (const fieldName in allRanks) {
                     html += `<tr><td>${fieldName}</td><td>${allRanks[fieldName]}</td></tr>`;
                 }
                 html += "</tbody></table>";
 
-                // Position the tooltip near the cursor
-                tooltipDiv.innerHTML = html;
-                tooltipDiv.style.display = 'block';
-                tooltipDiv.style.position = 'fixed';
-                tooltipDiv.style.left = `${event.clientX + 10}px`;
-                tooltipDiv.style.top = `${event.clientY + 10}px`;
-                tooltipDiv.style.zIndex = 999;
+                const target = document.getElementById('area-details');
+                target.innerHTML = html;
             };
-
         }
 
         return "";
     }
     """,
-    Output('tooltip-container', 'children'),
+    Output('area-details', 'children'),
     Input('field-dropdown', 'value'),
     Input('svg-loader', 'n_intervals')
 )
