@@ -76,7 +76,21 @@ app.clientside_callback(
         const tooltipDiv = document.getElementById('tooltip-container');
         tooltipDiv.innerHTML = '';
 
-        const areas = ['A', 'B', 'C', 'D', 'E', 'F'];
+        const areas = [
+            "Harvey",
+            "Arcadia",
+            "Fredericton_Junction",
+            "Tracy",
+            "Sunburty-York_South",
+            "Hanwell",
+            "Oromocto",
+            "Fredericton",
+            "New_Maryland",
+            "Nackawick-Millville",
+            "Central_York",
+            "Grand_Lake",
+            "Hashwaak"
+        ];
         const rankDataRaw = localStorage.getItem('rank_data');
         if (!rankDataRaw) return "";
 
@@ -86,18 +100,17 @@ app.clientside_callback(
 
         for (const area of areas) {
             const group = svgDoc.getElementById(area);
-            const rect = group?.querySelector('rect');
-            if (!group || !rect) continue;
+            if (!group ) continue;
+
+            group.style.cursor = 'pointer';
 
             if (fieldRanks[area]) {
                 const rank = fieldRanks[area];
                 const green = 100 + Math.floor(155 * (6 - rank) / 5);
-                rect.style.fill = `rgb(0,${green},0)`;
+                group.style.fill = `rgb(0,${green},0)`; // direct fill
             } else {
-                rect.style.fill = ''; // Reset to SVG default
+                group.style.fill = ''; // Reset fill if not ranked
             }
-
-            group.style.cursor = 'pointer';
 
             group.onclick = (event) => {
                 const allRanks = allFieldsRanks?.[area];
