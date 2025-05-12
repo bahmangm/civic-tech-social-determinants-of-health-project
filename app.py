@@ -106,7 +106,12 @@ app.clientside_callback(
 
             if (fieldRanks[area]) {
                 const rank = fieldRanks[area];
-                const green = 100 + Math.floor(155 * (6 - rank) / 5);
+
+                const maxRank = 13;
+                const minGreen = 50;
+                const maxGreen = 255;
+                const green = minGreen + Math.floor((maxGreen - minGreen) * (maxRank - rank) / (maxRank - 1));
+
                 group.style.fill = `rgb(0,${green},0)`; // direct fill
             } else {
                 group.style.fill = ''; // Reset fill if not ranked
