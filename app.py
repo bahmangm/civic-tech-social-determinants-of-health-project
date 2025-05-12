@@ -39,7 +39,7 @@ app.title = "Interactive Area Report"
 # Layout
 app.layout = html.Div([
     html.Div([
-        html.H2("Interactive Area Visualization"),
+        html.H2("Social Determinants of Health in RSC11"),
 
         dcc.Dropdown(
             id='field-dropdown',
