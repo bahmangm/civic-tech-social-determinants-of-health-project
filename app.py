@@ -78,20 +78,13 @@ app.clientside_callback(
         const svgDoc = obj?.contentDocument;
         if (!svgDoc || !svgDoc.getElementById) return "";
 
+        const target = document.getElementById('area-details');
+        target.innerHTML = "";  // ✅ Clear the table when dropdown value changes
+
         const areas = [
-            "Harvey",
-            "Arcadia",
-            "Fredericton_Junction",
-            "Tracy",
-            "Sunburty-York_South",
-            "Hanwell",
-            "Oromocto",
-            "Fredericton",
-            "New_Maryland",
-            "Nackawick-Millville",
-            "Central_York",
-            "Grand_Lake",
-            "Hashwaak"
+            "Harvey", "Arcadia", "Fredericton_Junction", "Tracy", "Sunburty-York_South",
+            "Hanwell", "Oromocto", "Fredericton", "New_Maryland", "Nackawick-Millville",
+            "Central_York", "Grand_Lake", "Hashwaak"
         ];
 
         const rankDataRaw = localStorage.getItem('rank_data');
@@ -103,10 +96,11 @@ app.clientside_callback(
 
         for (const area of areas) {
             const group = svgDoc.getElementById(area);
-            if (!group ) continue;
+            if (!group) continue;
 
             group.style.cursor = 'pointer';
 
+            // Color by selected field
             if (fieldRanks[area]) {
                 const rank = fieldRanks[area];
                 const maxRank = 13;
@@ -118,11 +112,13 @@ app.clientside_callback(
                 group.style.fill = '';
             }
 
-            group.onclick = () => {
+            // Handle area click
+            group.onclick = (event) => {
+                event.stopPropagation();
                 const allRanks = allFieldsRanks?.[area];
-                if (!allRanks || typeof allRanks !== 'object') return;
+                if (!allRanks) return;
 
-                let html = `<h4>Rank Details for ${area}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
+                let html = `<h4>Rank Details for Area ${area}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
                 for (const fieldName in allRanks) {
                     const rank = allRanks[fieldName];
                     const totalUnits = 13;
@@ -136,14 +132,21 @@ app.clientside_callback(
                     }
                     bar += '</div>';
                     html += `<tr><td>${fieldName}</td><td>${bar}</td></tr>`;
-
                 }
                 html += "</tbody></table>";
-
-                const target = document.getElementById('area-details');
                 target.innerHTML = html;
             };
         }
+
+        // ✅ Remove old event listener first, then add new one
+        svgDoc.removeEventListener('click', window._outsideClickHandler);
+        window._outsideClickHandler = function(e) {
+            if (!areas.includes(e.target?.id)) {
+                const target = document.getElementById('area-details');
+                if (target) target.innerHTML = "";
+            }
+        };
+        svgDoc.addEventListener('click', window._outsideClickHandler);
 
         return "";
     }
@@ -152,6 +155,7 @@ app.clientside_callback(
     Input('field-dropdown', 'value'),
     Input('svg-loader', 'n_intervals')
 )
+
 
 # Inject rank_data into localStorage on app start
 app.index_string = '''
