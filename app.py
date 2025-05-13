@@ -4,25 +4,33 @@ import pandas as pd
 import os
 import json
 
-# Load and rank data
+# Load and clean data
 df = pd.read_csv("data.csv")
 fields = df.columns[1:]
-ranks_df = df.copy()
 
-# Calculate ranks (higher is better)
+# Remove %, $ and commas → convert to numeric
+for col in fields:
+    df[col] = df[col].replace('[\$,%,]', '', regex=True).replace('', '0').astype(float)
+
+# Rank data (higher values = better)
+ranks_df = df.copy()
 for col in fields:
     ranks_df[col] = df[col].rank(ascending=False, method='min')
 
-# Save rank data as JSON for frontend use (only once)
+# Save JSON once
 if not os.path.exists('assets/rank_data.json'):
-    all_field_ranks = {}
-    for field in fields:
-        all_field_ranks[field] = dict(zip(df["Area"], ranks_df[field].astype(int)))
+    all_field_ranks = {
+        field: dict(zip(df["Area"], ranks_df[field].astype(int)))
+        for field in fields
+    }
 
-    all_ranks_by_area = {}
-    for area in df["Area"]:
-        area_ranks = {field: int(ranks_df.loc[df["Area"] == area, field].values[0]) for field in fields}
-        all_ranks_by_area[area] = area_ranks
+    all_ranks_by_area = {
+        area: {
+            field: int(ranks_df.loc[df["Area"] == area, field].values[0])
+            for field in fields
+        }
+        for area in df["Area"]
+    }
 
     with open('assets/rank_data.json', 'w') as f:
         json.dump({
@@ -30,7 +38,8 @@ if not os.path.exists('assets/rank_data.json'):
             **all_field_ranks
         }, f)
 
-    print("✅ rank_data.json created.")
+    print("rank_data.json created.")
+
 
 # Create Dash app
 app = dash.Dash(__name__)
@@ -79,12 +88,22 @@ app.clientside_callback(
         if (!svgDoc || !svgDoc.getElementById) return "";
 
         const target = document.getElementById('area-details');
-        target.innerHTML = "";  // ✅ Clear the table when dropdown value changes
+        target.innerHTML = "";  // Clear the table when dropdown value changes
 
         const areas = [
-            "Harvey", "Arcadia", "Fredericton_Junction", "Tracy", "Sunburty-York_South",
-            "Hanwell", "Oromocto", "Fredericton", "New_Maryland", "Nackawick-Millville",
-            "Central_York", "Grand_Lake", "Hashwaak"
+            "New Maryland",
+            "City of Fredericton",
+            "Hanwell",
+            "Sunburty-York South",
+            "Harvey",
+            "Oromocto",
+            "Nashwaak",
+            "Nackawic-Millville",
+            "Arcadia",
+            "Central York",
+            "Grand Lake",
+            "Village of Fredericton Junction",
+            "Village of Tracy"
         ];
 
         const rankDataRaw = localStorage.getItem('rank_data');
@@ -129,7 +148,7 @@ app.clientside_callback(
                 const allRanks = allFieldsRanks?.[area];
                 if (!allRanks) return;
 
-                let html = `<h4>Rank Details for ${area.replace(/_/g, ' ')}</h4><table><thead><tr><th>Field</th><th>Rank</th></tr></thead><tbody>`;
+                let html = `<h4>Rank Details for ${area.replace(/_/g, ' ')}</h4><table><thead><tr><th>SDoH</th><th>Rank</th></tr></thead><tbody>`;
                 for (const fieldName in allRanks) {
                     const rank = allRanks[fieldName];
                     const totalUnits = 13;
@@ -149,7 +168,7 @@ app.clientside_callback(
             };
         }
 
-        // ✅ Remove old event listener first, then add new one
+        // Remove old event listener first, then add new one
         svgDoc.removeEventListener('click', window._outsideClickHandler);
         window._outsideClickHandler = function(e) {
             if (!areas.includes(e.target?.id)) {
