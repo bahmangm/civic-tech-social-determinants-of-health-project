@@ -117,7 +117,7 @@ app.clientside_callback(
                 const maxRank = 13;
                 const minGreen = 50;
                 const maxGreen = 255;
-                const green = minGreen + Math.floor((maxGreen - minGreen) * (maxRank - rank) / (maxRank - 1));
+                const green = minGreen + Math.floor((maxGreen - minGreen) * (1- (maxRank - rank) / (maxRank - 1) ));
                 group.style.fill = `rgb(0,${green},0)`;
             } else {
                 group.style.fill = '';
@@ -135,7 +135,7 @@ app.clientside_callback(
                     const totalUnits = 13;
                     let bar = '<div style="display: flex; gap: 2px;">';
                     for (let i = 0; i < totalUnits; i++) {
-                        if (i < totalUnits - rank) {
+                        if (i <= totalUnits - rank) {
                             bar += '<span style="width: 10px; height: 12px; background-color: green; display: inline-block;"></span>';
                         } else {
                             bar += '<span style="width: 10px; height: 12px; background-color: #eee; display: inline-block;"></span>';
