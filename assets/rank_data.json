@@ -1,4 +1,19 @@
 {
+    "areas": [
+        "New Maryland",
+        "City of Fredericton",
+        "Hanwell",
+        "Sunburty-York South",
+        "Harvey",
+        "Oromocto",
+        "Nashwaak",
+        "Nackawic-Millville",
+        "Arcadia",
+        "Central York",
+        "Grand Lake",
+        "Village of Fredericton Junction",
+        "Village of Tracy"
+    ],
     "all_fields": {
         "New Maryland": {
             "No Highschool certificate, diploma or degree": 13,
