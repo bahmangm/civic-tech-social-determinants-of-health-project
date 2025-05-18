@@ -1,24 +1,43 @@
+"""
+Dash app for visualizing Social Determinants of Health (SDoH) ranks across regions in RSC11.
+Loads data, processes rankings, and renders an interactive SVG map with interactivity.
+"""
+
 import dash
-from dash import html, dcc, Input, Output, State
+from dash import html, dcc, Input, Output
 import pandas as pd
 import os
 import json
 
-# Load and clean data
-df = pd.read_csv("data.csv")
-fields = df.columns[1:]
+# ------------------------
+# Constants
+# ------------------------
 
-# Remove %, $ and commas → convert to numeric
-for col in fields:
-    df[col] = df[col].replace('[\$,%,]', '', regex=True).replace('', '0').astype(float)
+DATA_PATH = "data.csv"
+JSON_PATH = "assets/rank_data.json"
+SVG_PATH = "assets/image_map.svg"
 
-# Rank data (higher values = better)
-ranks_df = df.copy()
-for col in fields:
-    ranks_df[col] = df[col].rank(ascending=False, method='min')
+# ------------------------
+# Data Processing Functions
+# ------------------------
 
-# Save JSON once
-if not os.path.exists('assets/rank_data.json'):
+def clean_and_rank_data(filepath):
+    """Load CSV, clean numeric fields, and compute ranks (higher = better)."""
+    df = pd.read_csv(filepath)
+    fields = df.columns[1:]
+
+    for col in fields:
+        df[col] = df[col].replace('[\$,%,]', '', regex=True).replace('', '0').astype(float)
+
+    ranks_df = df.copy()
+    for col in fields:
+        ranks_df[col] = df[col].rank(ascending=False, method='min')
+
+    return df, ranks_df, fields
+
+
+def generate_rank_json(df, ranks_df, fields, output_path=JSON_PATH):
+    """Generate and save rank data to a JSON file for clientside use."""
     all_field_ranks = {
         field: dict(zip(df["Area"], ranks_df[field].astype(int)))
         for field in fields
@@ -32,57 +51,72 @@ if not os.path.exists('assets/rank_data.json'):
         for area in df["Area"]
     }
 
-    # Convert to list to ensure JSON serializability
     areas = df["Area"].dropna().unique().tolist()
 
-    with open('assets/rank_data.json', 'w') as f:
+    with open(output_path, 'w') as f:
         json.dump({
             'areas': areas,
             'all_fields': all_ranks_by_area,
             **all_field_ranks
         }, f)
 
-    print("rank_data.json created.")
+    print(f"{output_path} created.")
 
+
+# ------------------------
+# Load & Prepare Data
+# ------------------------
+
+df, ranks_df, fields = clean_and_rank_data(DATA_PATH)
+
+if not os.path.exists(JSON_PATH):
+    generate_rank_json(df, ranks_df, fields)
+
+
+# ------------------------
+# App Layout
+# ------------------------
 
 # Create Dash app
 app = dash.Dash(__name__)
 
-# Layout
 app.layout = html.Div([
-    html.Div([
-        html.H2("Social Determinants of Health in RSC11"),
+        html.Div([
+            html.H2("Social Determinants of Health in RSC11"),
 
-        dcc.Dropdown(
-            id='field-dropdown',
-            options=[{'label': f, 'value': f} for f in fields],
-            placeholder='Select a field',
-            style={'width': '100%', 'marginBottom': '20px'}
-        ),
+            dcc.Dropdown(
+                id='field-dropdown',
+                options=[{'label': f, 'value': f} for f in fields],
+                placeholder='Select a field',
+                style={'width': '100%', 'marginBottom': '20px'}
+            ),
 
-        html.Div(id='area-details')
-    ], style={'width': '30%', 'padding': '20px', 'boxSizing': 'border-box'}),
+            html.Div(id='area-details')
+        ], style={'width': '30%', 'padding': '20px', 'boxSizing': 'border-box'}),
 
-    html.Div([
-        html.ObjectEl(
-            id='svg-container',
-            data='/assets/image_map.svg',
-            type='image/svg+xml',
-            style={'width': '100%', 'height': 'auto'}
-        ),
+        html.Div([
+            html.ObjectEl(
+                id='svg-container',
+                data=SVG_PATH,
+                type='image/svg+xml',
+                style={'width': '100%', 'height': 'auto'}
+            ),
 
-        dcc.Interval(
-            id='svg-loader',
-            interval=500,
-            n_intervals=0,
-            max_intervals=10  # Stop after 10 tries
-        ),
-    ], style={'width': '70%', 'padding': '20px', 'boxSizing': 'border-box'})
+            dcc.Interval(
+                id='svg-loader',
+                interval=500,
+                n_intervals=0,
+                max_intervals=10  # Stop after 10 tries
+            ),
+        ], style={'width': '70%', 'padding': '20px', 'boxSizing': 'border-box'})
 
-], style={'display': 'flex', 'flexDirection': 'row'})
+    ], style={'display': 'flex', 'flexDirection': 'row'})
 
 
-# JavaScript-based color and click handler
+# ------------------------
+# Client-Side Callback
+# ------------------------
+
 app.clientside_callback(
     """
     function(field, n_intervals) {
@@ -91,7 +125,7 @@ app.clientside_callback(
         if (!svgDoc || !svgDoc.getElementById) return "";
 
         const target = document.getElementById('area-details');
-        target.innerHTML = "";  // Clear the table when dropdown value changes
+        target.innerHTML = "";  // Clear previous selection
 
         const rankDataRaw = localStorage.getItem('rank_data');
         if (!rankDataRaw) return "";
@@ -107,7 +141,7 @@ app.clientside_callback(
 
             group.style.cursor = 'pointer';
 
-            // Add tooltip (title tag) for hover
+            // Add or update tooltip
             let existingTitle = group.querySelector('title');
             if (!existingTitle) {
                 const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
@@ -117,20 +151,19 @@ app.clientside_callback(
                 existingTitle.textContent = area.replace(/_/g, ' ');
             }
 
-
-            // Color by selected field
+            // Fill color based on rank
             if (fieldRanks[area]) {
                 const rank = fieldRanks[area];
                 const maxRank = 13;
                 const minGreen = 50;
                 const maxGreen = 255;
-                const green = minGreen + Math.floor((maxGreen - minGreen) * (1- (maxRank - rank) / (maxRank - 1) ));
+                const green = 50 + Math.floor((255 - 50) * (1 - (maxRank - rank) / (maxRank - 1)));
                 group.style.fill = `rgb(0,${green},0)`;
             } else {
                 group.style.fill = '';
             }
 
-            // Handle area click
+            // Click handler
             group.onclick = (event) => {
                 event.stopPropagation();
                 const allRanks = allFieldsRanks?.[area];
@@ -156,7 +189,7 @@ app.clientside_callback(
             };
         }
 
-        // Remove old event listener first, then add new one
+        // Clear on outside click
         svgDoc.removeEventListener('click', window._outsideClickHandler);
         window._outsideClickHandler = function(e) {
             if (!areas.includes(e.target?.id)) {
@@ -175,7 +208,10 @@ app.clientside_callback(
 )
 
 
-# Inject rank_data into localStorage on app start
+# ------------------------
+# HTML Index String
+# ------------------------
+
 app.index_string = '''
 <!DOCTYPE html>
 <html>
@@ -202,6 +238,11 @@ app.index_string = '''
     </body>
 </html>
 '''
+
+
+# ------------------------
+# Run Server
+# ------------------------
 
 if __name__ == '__main__':
     app.run(debug=True)
