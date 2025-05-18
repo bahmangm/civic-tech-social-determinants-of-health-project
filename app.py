@@ -43,7 +43,6 @@ if not os.path.exists('assets/rank_data.json'):
 
 # Create Dash app
 app = dash.Dash(__name__)
-app.title = "Interactive Area Report"
 
 # Layout
 app.layout = html.Div([
@@ -193,7 +192,7 @@ app.index_string = '''
 <html>
     <head>
         {%metas%}
-        <title>Interactive Area Report</title>
+        <title>SDoH in RSC11</title>
         {%favicon%}
         {%css%}
         <script>
