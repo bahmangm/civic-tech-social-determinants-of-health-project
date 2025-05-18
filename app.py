@@ -32,8 +32,12 @@ if not os.path.exists('assets/rank_data.json'):
         for area in df["Area"]
     }
 
+    # Convert to list to ensure JSON serializability
+    areas = df["Area"].dropna().unique().tolist()
+
     with open('assets/rank_data.json', 'w') as f:
         json.dump({
+            'areas': areas,
             'all_fields': all_ranks_by_area,
             **all_field_ranks
         }, f)
@@ -89,26 +93,11 @@ app.clientside_callback(
         const target = document.getElementById('area-details');
         target.innerHTML = "";  // Clear the table when dropdown value changes
 
-        const areas = [
-            "New Maryland",
-            "City of Fredericton",
-            "Hanwell",
-            "Sunburty-York South",
-            "Harvey",
-            "Oromocto",
-            "Nashwaak",
-            "Nackawic-Millville",
-            "Arcadia",
-            "Central York",
-            "Grand Lake",
-            "Village of Fredericton Junction",
-            "Village of Tracy"
-        ];
-
         const rankDataRaw = localStorage.getItem('rank_data');
         if (!rankDataRaw) return "";
 
         const rankData = JSON.parse(rankDataRaw);
+        const areas = rankData?.['areas'] || [];
         const fieldRanks = field ? (rankData?.[field] || {}) : {};
         const allFieldsRanks = rankData?.['all_fields'] || {};
 
