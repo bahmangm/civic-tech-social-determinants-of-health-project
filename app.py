@@ -15,7 +15,7 @@ import json
 
 DATA_PATH = "data.csv"
 JSON_PATH = "assets/rank_data.json"
-SVG_PATH = "assets/image_map.svg"
+SVG_PATH = "assets/image_map_labeled.svg"
 
 # ------------------------
 # Data Processing Functions
