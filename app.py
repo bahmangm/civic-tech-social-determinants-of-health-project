@@ -27,7 +27,7 @@ def clean_and_rank_data(filepath):
     fields = df.columns[1:]
 
     for col in fields:
-        df[col] = df[col].replace('[\$,%,]', '', regex=True).replace('', '0').astype(float)
+        df[col] = df[col].replace(r'[\$,%,]', '', regex=True).replace('', '0').astype(float)
 
     ranks_df = df.copy()
     for col in fields:
