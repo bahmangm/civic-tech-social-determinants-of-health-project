@@ -142,14 +142,14 @@ app.clientside_callback(
             group.style.cursor = 'pointer';
 
             // Add or update tooltip
-            let existingTitle = group.querySelector('title');
-            if (!existingTitle) {
-                const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
-                titleEl.textContent = area.replace(/_/g, ' ');
-                group.appendChild(titleEl);
-            } else {
-                existingTitle.textContent = area.replace(/_/g, ' ');
-            }
+            // let existingTitle = group.querySelector('title');
+            // if (!existingTitle) {
+            //     const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
+            //     titleEl.textContent = area.replace(/_/g, ' ');
+            //     group.appendChild(titleEl);
+            // } else {
+            //     existingTitle.textContent = area.replace(/_/g, ' ');
+            // }
 
             // Fill color based on rank
             if (fieldRanks[area]) {
