@@ -93,7 +93,7 @@ app.layout = html.Div([
 
             html.Div(id='area-details', 
                      style={'marginTop': '60px'})
-        ], style={'width': '30%', 'padding': '20px', 'boxSizing': 'border-box'}),
+        ], style={'width': '32%', 'padding': '20px', 'boxSizing': 'border-box'}),
 
         html.Div([
             html.ObjectEl(
@@ -109,9 +109,10 @@ app.layout = html.Div([
                 n_intervals=0,
                 max_intervals=10  # Stop after 10 tries
             ),
-        ], style={'width': '70%', 'padding': '20px', 'boxSizing': 'border-box'})
+        ], style={'width': '68%', 'padding': '20px', 'boxSizing': 'border-box'})
 
-    ], style={'display': 'flex', 'flexDirection': 'row'})
+    ], style={'display': 'flex', 'flexDirection': 'row',
+              'fontFamily': 'Verdana, Arial, Helvetica, sans-serif'})
 
 
 # ------------------------
