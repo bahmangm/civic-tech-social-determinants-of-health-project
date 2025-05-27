@@ -106,13 +106,13 @@ app.layout = html.Div([
             dcc.Dropdown(
                 id='field-dropdown',
                 options=[{'label': f, 'value': f} for f in fields],
-                placeholder='Select a field',
+                placeholder='Select a SDoH',
                 style={'width': '100%', 'marginBottom': '20px'}
             ),
 
             html.Div(id='area-details', 
                      style={'marginTop': '60px'})
-        ], style={'width': '32%', 'padding': '20px', 'boxSizing': 'border-box'}),
+        ], style={'width': '32%', 'padding': '0px', 'boxSizing': 'border-box'}),
 
         html.Div([
             html.ObjectEl(
