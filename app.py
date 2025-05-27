@@ -51,12 +51,31 @@ def generate_rank_json(df, ranks_df, fields, output_path=JSON_PATH):
         for area in df["Area"]
     }
 
+    # Add stats and raw_values for statistical summary table
+    stats = {
+        field: {
+            "min": float(df[field].min()),
+            "avg": float(df[field].mean()),
+            "max": float(df[field].max())
+        } for field in fields
+    }
+    raw_values = {
+        area: {
+            field: float(df.loc[df["Area"] == area, field].values[0])
+            for field in fields
+        }
+        for area in df["Area"]
+    }
+    
+
     areas = df["Area"].dropna().unique().tolist()
 
     with open(output_path, 'w') as f:
         json.dump({
             'areas': areas,
             'all_fields': all_ranks_by_area,
+            'raw_values': raw_values,
+            'stats': stats,
             **all_field_ranks
         }, f)
 
@@ -187,6 +206,29 @@ app.clientside_callback(
                     html += `<tr><td>${fieldName}</td><td>${bar}</td></tr>`;
                 }
                 html += "</tbody></table>";
+
+                // Add statistical summary table to html
+                const stats = rankData?.['stats'] || {};
+                const rawValues = rankData?.['raw_values'] || {};
+                const selectedRaw = rawValues?.[area];
+
+                html += `<br><h4>Statistical Summary for ${area.replace(/_/g, ' ')}</h4><table>
+                <thead><tr><th>SDoH</th><th>Min</th><th>Avg</th><th>Max</th><th>Value</th></tr></thead><tbody>`;
+
+                for (const fieldName in stats) {
+                    const stat = stats[fieldName];
+                    const raw = selectedRaw?.[fieldName];
+                    html += `<tr>
+                        <td>${fieldName}</td>
+                        <td>${stat.min.toFixed(2)}</td>
+                        <td>${stat.avg.toFixed(2)}</td>
+                        <td>${stat.max.toFixed(2)}</td>
+                        <td>${raw !== undefined ? raw.toFixed(2) : 'N/A'}</td>
+                    </tr>`;
+                }
+                html += "</tbody></table>";
+
+
                 target.innerHTML = html;
             };
         }

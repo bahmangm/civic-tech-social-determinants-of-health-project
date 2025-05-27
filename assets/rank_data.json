@@ -185,6 +185,234 @@
             "Unemployment rate": 4
         }
     },
+    "raw_values": {
+        "New Maryland": {
+            "No Highschool certificate, diploma or degree": 2.15,
+            " % Highschool": 16.95,
+            "% Postsecondary": 81.15,
+            " % of Children in a one-parent family": 4.45,
+            "% Living with other relatives": 1.08,
+            "% Living with non-relatives only": 1.68,
+            "Median after-tax income (in 2020)": 45600.0,
+            "% Receiving COVID-19 - Government income support and benefits": 3.2,
+            "Prevalence of low income after taxes": 1.9,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 10.16,
+            "Unemployment rate": 6.5
+        },
+        "City of Fredericton": {
+            "No Highschool certificate, diploma or degree": 4.73,
+            " % Highschool": 22.22,
+            "% Postsecondary": 73.05,
+            " % of Children in a one-parent family": 6.33,
+            "% Living with other relatives": 1.91,
+            "% Living with non-relatives only": 7.27,
+            "Median after-tax income (in 2020)": 36400.0,
+            "% Receiving COVID-19 - Government income support and benefits": 4.9,
+            "Prevalence of low income after taxes": 12.9,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 26.29,
+            "Unemployment rate": 8.4
+        },
+        "Hanwell": {
+            "No Highschool certificate, diploma or degree": 2.7,
+            " % Highschool": 25.32,
+            "% Postsecondary": 71.98,
+            " % of Children in a one-parent family": 5.8,
+            "% Living with other relatives": 1.7,
+            "% Living with non-relatives only": 1.49,
+            "Median after-tax income (in 2020)": 43600.0,
+            "% Receiving COVID-19 - Government income support and benefits": 3.4,
+            "Prevalence of low income after taxes": 6.8,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 14.31,
+            "Unemployment rate": 6.6
+        },
+        "Sunburty-York South": {
+            "No Highschool certificate, diploma or degree": 7.18,
+            " % Highschool": 32.5,
+            "% Postsecondary": 60.32,
+            " % of Children in a one-parent family": 5.84,
+            "% Living with other relatives": 1.59,
+            "% Living with non-relatives only": 2.46,
+            "Median after-tax income (in 2020)": 39600.0,
+            "% Receiving COVID-19 - Government income support and benefits": 4.0,
+            "Prevalence of low income after taxes": 5.4,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 12.89,
+            "Unemployment rate": 5.8
+        },
+        "Harvey": {
+            "No Highschool certificate, diploma or degree": 7.4,
+            " % Highschool": 33.16,
+            "% Postsecondary": 59.44,
+            " % of Children in a one-parent family": 6.27,
+            "% Living with other relatives": 0.78,
+            "% Living with non-relatives only": 2.09,
+            "Median after-tax income (in 2020)": 34000.0,
+            "% Receiving COVID-19 - Government income support and benefits": 4.8,
+            "Prevalence of low income after taxes": 11.8,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 15.29,
+            "Unemployment rate": 9.6
+        },
+        "Oromocto": {
+            "No Highschool certificate, diploma or degree": 5.97,
+            " % Highschool": 36.75,
+            "% Postsecondary": 57.27,
+            " % of Children in a one-parent family": 6.91,
+            "% Living with other relatives": 1.66,
+            "% Living with non-relatives only": 5.93,
+            "Median after-tax income (in 2020)": 44400.0,
+            "% Receiving COVID-19 - Government income support and benefits": 3.7,
+            "Prevalence of low income after taxes": 5.7,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 14.04,
+            "Unemployment rate": 5.1
+        },
+        "Nashwaak": {
+            "No Highschool certificate, diploma or degree": 11.55,
+            " % Highschool": 31.51,
+            "% Postsecondary": 57.14,
+            " % of Children in a one-parent family": 6.53,
+            "% Living with other relatives": 1.93,
+            "% Living with non-relatives only": 2.57,
+            "Median after-tax income (in 2020)": 34000.0,
+            "% Receiving COVID-19 - Government income support and benefits": 6.3,
+            "Prevalence of low income after taxes": 13.8,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 20.15,
+            "Unemployment rate": 10.1
+        },
+        "Nackawic-Millville": {
+            "No Highschool certificate, diploma or degree": 11.33,
+            " % Highschool": 31.77,
+            "% Postsecondary": 56.91,
+            " % of Children in a one-parent family": 5.24,
+            "% Living with other relatives": 1.31,
+            "% Living with non-relatives only": 3.54,
+            "Median after-tax income (in 2020)": 33600.0,
+            "% Receiving COVID-19 - Government income support and benefits": 5.1,
+            "Prevalence of low income after taxes": 15.4,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 20.36,
+            "Unemployment rate": 8.0
+        },
+        "Arcadia": {
+            "No Highschool certificate, diploma or degree": 10.27,
+            " % Highschool": 33.53,
+            "% Postsecondary": 55.89,
+            " % of Children in a one-parent family": 5.68,
+            "% Living with other relatives": 1.49,
+            "% Living with non-relatives only": 2.09,
+            "Median after-tax income (in 2020)": 30200.0,
+            "% Receiving COVID-19 - Government income support and benefits": 4.3,
+            "Prevalence of low income after taxes": 15.0,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 23.05,
+            "Unemployment rate": 13.8
+        },
+        "Central York": {
+            "No Highschool certificate, diploma or degree": 11.87,
+            " % Highschool": 33.02,
+            "% Postsecondary": 54.98,
+            " % of Children in a one-parent family": 7.08,
+            "% Living with other relatives": 1.66,
+            "% Living with non-relatives only": 2.45,
+            "Median after-tax income (in 2020)": 34400.0,
+            "% Receiving COVID-19 - Government income support and benefits": 5.3,
+            "Prevalence of low income after taxes": 14.8,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 19.86,
+            "Unemployment rate": 10.7
+        },
+        "Grand Lake": {
+            "No Highschool certificate, diploma or degree": 13.92,
+            " % Highschool": 37.52,
+            "% Postsecondary": 48.73,
+            " % of Children in a one-parent family": 8.58,
+            "% Living with other relatives": 2.17,
+            "% Living with non-relatives only": 2.86,
+            "Median after-tax income (in 2020)": 29600.0,
+            "% Receiving COVID-19 - Government income support and benefits": 5.4,
+            "Prevalence of low income after taxes": 20.8,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 21.51,
+            "Unemployment rate": 13.3
+        },
+        "Village of Fredericton Junction": {
+            "No Highschool certificate, diploma or degree": 12.12,
+            " % Highschool": 42.42,
+            "% Postsecondary": 46.97,
+            " % of Children in a one-parent family": 4.83,
+            "% Living with other relatives": 0.0,
+            "% Living with non-relatives only": 4.83,
+            "Median after-tax income (in 2020)": 30600.0,
+            "% Receiving COVID-19 - Government income support and benefits": 3.6,
+            "Prevalence of low income after taxes": 17.6,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 31.03,
+            "Unemployment rate": 5.6
+        },
+        "Village of Tracy": {
+            "No Highschool certificate, diploma or degree": 14.49,
+            " % Highschool": 50.72,
+            "% Postsecondary": 36.23,
+            " % of Children in a one-parent family": 4.92,
+            "% Living with other relatives": 1.64,
+            "% Living with non-relatives only": 2.46,
+            "Median after-tax income (in 2020)": 32000.0,
+            "% Receiving COVID-19 - Government income support and benefits": 7.2,
+            "Prevalence of low income after taxes": 21.2,
+            "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": 34.0,
+            "Unemployment rate": 10.6
+        }
+    },
+    "stats": {
+        "No Highschool certificate, diploma or degree": {
+            "min": 2.15,
+            "avg": 8.89846153846154,
+            "max": 14.49
+        },
+        " % Highschool": {
+            "min": 16.95,
+            "avg": 32.87615384615385,
+            "max": 50.72
+        },
+        "% Postsecondary": {
+            "min": 36.23,
+            "avg": 58.46615384615385,
+            "max": 81.15
+        },
+        " % of Children in a one-parent family": {
+            "min": 4.45,
+            "avg": 6.035384615384616,
+            "max": 8.58
+        },
+        "% Living with other relatives": {
+            "min": 0.0,
+            "avg": 1.4553846153846155,
+            "max": 2.17
+        },
+        "% Living with non-relatives only": {
+            "min": 1.49,
+            "avg": 3.209230769230769,
+            "max": 7.27
+        },
+        "Median after-tax income (in 2020)": {
+            "min": 29600.0,
+            "avg": 36000.0,
+            "max": 45600.0
+        },
+        "% Receiving COVID-19 - Government income support and benefits": {
+            "min": 3.2,
+            "avg": 4.707692307692307,
+            "max": 7.2
+        },
+        "Prevalence of low income after taxes": {
+            "min": 1.9,
+            "avg": 12.546153846153846,
+            "max": 21.2
+        },
+        "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": {
+            "min": 10.16,
+            "avg": 20.22615384615385,
+            "max": 34.0
+        },
+        "Unemployment rate": {
+            "min": 5.1,
+            "avg": 8.776923076923076,
+            "max": 13.8
+        }
+    },
     "No Highschool certificate, diploma or degree": {
         "New Maryland": 13,
         "City of Fredericton": 11,
