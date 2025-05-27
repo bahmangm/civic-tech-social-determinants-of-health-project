@@ -190,7 +190,7 @@ app.clientside_callback(
                 const allRanks = allFieldsRanks?.[area];
                 if (!allRanks) return;
 
-                let html = `<h4>Rank Details for ${area.replace(/_/g, ' ')}</h4><table><thead><tr><th>SDoH</th><th>Rank</th></tr></thead><tbody>`;
+                let html = `<h4 style="margin-bottom: 0px;">Rank Details for ${area.replace(/_/g, ' ')}</h4><table><thead><tr><th>SDoH</th><th>Rank</th></tr></thead><tbody>`;
                 for (const fieldName in allRanks) {
                     const rank = allRanks[fieldName];
                     const totalUnits = 13;
@@ -212,7 +212,7 @@ app.clientside_callback(
                 const rawValues = rankData?.['raw_values'] || {};
                 const selectedRaw = rawValues?.[area];
 
-                html += `<br><h4>Statistical Summary for ${area.replace(/_/g, ' ')}</h4><table>
+                html += `<br><h4 style="margin-bottom: 0px;">Statistical Summary for ${area.replace(/_/g, ' ')}</h4><table>
                 <thead><tr><th>SDoH</th><th>Min</th><th>Avg</th><th>Max</th><th>Value</th></tr></thead><tbody>`;
 
                 for (const fieldName in stats) {
