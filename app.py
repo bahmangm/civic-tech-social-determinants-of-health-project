@@ -17,6 +17,21 @@ DATA_PATH = "data.csv"
 JSON_PATH = "assets/rank_data.json"
 SVG_PATH = "assets/image_map_labeled.svg"
 
+# Indicate which SDoHs are positive and which are negative
+SDoH_SIGNS = {
+    "No Highschool certificate, diploma or degree": "Positive",
+    " % Highschool": "Positive",
+    "% Postsecondary": "Positive",
+    " % of Children in a one-parent family": "Positive",
+    "% Living with other relatives": "Positive",
+    "% Living with non-relatives only": "Negative",
+    "Median after-tax income (in 2020)": "Positive",
+    "% Receiving COVID-19 - Government income support and benefits": "Positive",
+    "Prevalence of low income after taxes": "Positive",
+    "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": "Negative",
+    "Unemployment rate": "Negative"
+}
+
 # ------------------------
 # Data Processing Functions
 # ------------------------
@@ -76,6 +91,7 @@ def generate_rank_json(df, ranks_df, fields, output_path=JSON_PATH):
             'all_fields': all_ranks_by_area,
             'raw_values': raw_values,
             'stats': stats,
+            'field_signs': SDoH_SIGNS,
             **all_field_ranks
         }, f)
 
@@ -155,6 +171,9 @@ app.clientside_callback(
         const areas = rankData?.['areas'] || [];
         const fieldRanks = field ? (rankData?.[field] || {}) : {};
         const allFieldsRanks = rankData?.['all_fields'] || {};
+        const fieldSigns = rankData?.['field_signs'] || {};
+        const sign = fieldSigns?.[field] || "Positive";
+
 
         for (const area of areas) {
             const group = svgDoc.getElementById(area);
@@ -176,10 +195,15 @@ app.clientside_callback(
             if (fieldRanks[area]) {
                 const rank = fieldRanks[area];
                 const maxRank = 13;
-                const minGreen = 50;
-                const maxGreen = 255;
-                const green = 50 + Math.floor((255 - 50) * (1 - (maxRank - rank) / (maxRank - 1)));
-                group.style.fill = `rgb(0,${green},0)`;
+                // 255 is max shade of green (or red) and 50 is min shade
+                const intensity = 50 + Math.floor((255 - 50) * (1 - (maxRank - rank) / (maxRank - 1)));
+                
+                if (sign === "Positive") {
+                    group.style.fill = `rgb(0,${intensity},0)`;  // green
+                } else {
+                    group.style.fill = `rgb(${intensity},0,0)`;  // red
+                }
+
             } else {
                 group.style.fill = '';
             }
@@ -196,9 +220,13 @@ app.clientside_callback(
                     const totalUnits = 13;
                     let bar = '<div style="display: flex; gap: 2px;">';
                     for (let i = 0; i < totalUnits; i++) {
-                        if (i <= totalUnits - rank) {
-                            bar += '<span style="width: 10px; height: 12px; background-color: green; display: inline-block;"></span>';
-                        } else {
+                        if (i <= totalUnits - rank) { // color the boxes in green or red
+                            if (sign === "Positive") {
+                                bar += '<span style="width: 10px; height: 12px; background-color: green; display: inline-block;"></span>';
+                            } else {
+                                bar += '<span style="width: 10px; height: 12px; background-color: red; display: inline-block;"></span>';
+                            }
+                        } else { // color the empty boxes in gray
                             bar += '<span style="width: 10px; height: 12px; background-color: #eee; display: inline-block;"></span>';
                         }
                     }
