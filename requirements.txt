@@ -5,6 +5,7 @@ click==8.1.8
 dash==3.0.4
 dash-core-components==2.0.0
 dash-html-components==2.0.0
+dotenv==0.9.9
 Flask==3.0.3
 idna==3.10
 importlib_metadata==8.7.0

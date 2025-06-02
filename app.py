@@ -315,6 +315,9 @@ app.index_string = '''
 # ------------------------
 # Run Server
 # ------------------------
+import dotenv
+dotenv.load_dotenv()
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if os.environ.get('ENVIRONMENT') == 'local':
+    if __name__ == '__main__':
+        app.run(debug=True)
