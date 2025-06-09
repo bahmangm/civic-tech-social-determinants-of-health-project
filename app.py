@@ -19,17 +19,17 @@ SVG_PATH = "assets/image_map_labeled.svg"
 
 # Indicate which SDoHs are positive and which are negative
 SDoH_SIGNS = {
-    "No Highschool certificate, diploma or degree": "Positive",
-    " % Highschool": "Positive",
+    "% No Highschool diploma": "Negative",
+    "% Highschool": "Negative",
     "% Postsecondary": "Positive",
-    " % of Children in a one-parent family": "Positive",
-    "% Living with other relatives": "Positive",
-    "% Living with non-relatives only": "Negative",
-    "Median after-tax income (in 2020)": "Positive",
-    "% Receiving COVID-19 - Government income support and benefits": "Positive",
-    "Prevalence of low income after taxes": "Positive",
-    "% Households spending >30% of income on shelter costs, or in housing considered 'not suitable', or 'major repairs needed'": "Negative",
-    "Unemployment rate": "Negative"
+    "% of Children in 1-Parent families": "Negative",
+    # "% Living with other relatives": "Positive",
+    # "% Living with non-relatives only": "Negative",
+    "Median after tax income (in 2020)": "Positive",
+    "% Received COVID-19 benefits": "Negative",
+    "% Low-income (after taxes)": "Negative",
+    "% Spending >30% income on housing": "Negative",
+    "Unemployment Rate": "Negative"
 }
 
 # ------------------------
