@@ -371,4 +371,24 @@
        id="path25"
        inkscape:label="New Maryland Line" />
   </g>
+  <g
+     id="g13">
+    <path
+       style="fill:#000000;stroke-width:0.987338"
+       d="m 904.12149,1083.0258 124.80721,-0.5375 -0.3238,-22.3065 -124.55142,0.5376 z"
+       id="path12"
+       inkscape:label="Rural District" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:17.7966px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;stroke-width:0.953387"
+       x="908.09534"
+       y="1077.9508"
+       id="text12"
+       inkscape:label="Rural District Label"><tspan
+         sodipodi:role="line"
+         id="tspan12"
+         style="fill:#ffffff;stroke-width:0.953387"
+         x="908.09534"
+         y="1077.9508">Rural District</tspan></text>
+  </g>
 </svg>
