@@ -218,15 +218,13 @@ app.clientside_callback(
                 for (const fieldName in allRanks) {
                     const rank = allRanks[fieldName];
                     const totalUnits = 13;
+                    const fieldSign = fieldSigns?.[fieldName] || "Positive";  // Use sign for current field
                     let bar = '<div style="display: flex; gap: 2px;">';
                     for (let i = 0; i < totalUnits; i++) {
-                        if (i <= totalUnits - rank) { // color the boxes in green or red
-                            if (sign === "Positive") {
-                                bar += '<span style="width: 10px; height: 12px; background-color: green; display: inline-block;"></span>';
-                            } else {
-                                bar += '<span style="width: 10px; height: 12px; background-color: red; display: inline-block;"></span>';
-                            }
-                        } else { // color the empty boxes in gray
+                        if (i <= totalUnits - rank) {
+                            const color = fieldSign === "Positive" ? "green" : "red";  // ✅ Individual color
+                            bar += `<span style="width: 10px; height: 12px; background-color: ${color}; display: inline-block;"></span>`;
+                        } else {
                             bar += '<span style="width: 10px; height: 12px; background-color: #eee; display: inline-block;"></span>';
                         }
                     }
