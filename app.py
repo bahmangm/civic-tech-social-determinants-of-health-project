@@ -194,7 +194,7 @@ app.clientside_callback(
             // Fill color based on rank
             if (fieldRanks[area]) {
                 const rank = fieldRanks[area];
-                const maxRank = 13;
+                const maxRank = 14;
                 // 255 is max shade of green (or red) and 50 is min shade
                 const intensity = 50 + Math.floor((255 - 50) * (1 - (maxRank - rank) / (maxRank - 1)));
                 
@@ -217,7 +217,7 @@ app.clientside_callback(
                 let html = `<h4 style="margin-bottom: 0px;">Rank Details for ${area.replace(/_/g, ' ')}</h4><table><thead><tr><th>SDoH</th><th>Rank</th></tr></thead><tbody>`;
                 for (const fieldName in allRanks) {
                     const rank = allRanks[fieldName];
-                    const totalUnits = 13;
+                    const totalUnits = 14;
                     const fieldSign = fieldSigns?.[fieldName] || "Positive";  // Use sign for current field
                     let bar = '<div style="display: flex; gap: 2px;">';
                     for (let i = 0; i < totalUnits; i++) {
