@@ -2,6 +2,11 @@
 
 This Dash application visualizes Social Determinants of Health (SDoH) rankings across different regions in RSC11 using an interactive SVG map. It enables users to explore and compare socioeconomic indicators that influence community health outcomes.
 
+## Demo
+
+👉 [Watch the demo video on LinkedIn](https://www.linkedin.com/feed/update/urn:li:ugcPost:7349072578289815557)
+
+
 ## 🔍 Features
 
 - Interactive SVG map displaying SDoH rankings by region.
