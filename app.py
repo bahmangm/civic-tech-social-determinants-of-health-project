@@ -172,6 +172,7 @@ app.clientside_callback(
         const fieldRanks = field ? (rankData?.[field] || {}) : {};
         const allFieldsRanks = rankData?.['all_fields'] || {};
         const fieldSigns = rankData?.['field_signs'] || {};
+        const rawValues = rankData?.['raw_values'] || {};
         const sign = fieldSigns?.[field] || "Positive";
 
 
@@ -219,6 +220,12 @@ app.clientside_callback(
                     const rank = allRanks[fieldName];
                     const totalUnits = 14;
                     const fieldSign = fieldSigns?.[fieldName] || "Positive";  // Use sign for current field
+
+                    // Get raw numeric value
+                    const rawValue = rawValues?.[area]?.[fieldName];
+                    const formattedValue = rawValue !== undefined ? rawValue.toFixed(2) : "N/A";
+
+                    // Build bar
                     let bar = '<div style="display: flex; gap: 2px;">';
                     for (let i = 0; i < totalUnits; i++) {
                         if (i <= totalUnits - rank) {
@@ -229,13 +236,13 @@ app.clientside_callback(
                         }
                     }
                     bar += '</div>';
-                    html += `<tr><td>${fieldName}</td><td>${bar}</td></tr>`;
+                    html += `<tr><td>${fieldName} (${formattedValue})</td><td>${bar}</td></tr>`;
                 }
                 html += "</tbody></table>";
 
+                /*
                 // Add statistical summary table to html
                 const stats = rankData?.['stats'] || {};
-                const rawValues = rankData?.['raw_values'] || {};
                 const selectedRaw = rawValues?.[area];
 
                 html += `<br><h4 style="margin-bottom: 0px;">Statistical Summary for ${area.replace(/_/g, ' ')}</h4><table>
@@ -253,6 +260,7 @@ app.clientside_callback(
                     </tr>`;
                 }
                 html += "</tbody></table>";
+                */
 
 
                 target.innerHTML = html;
